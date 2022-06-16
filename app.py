@@ -4,13 +4,21 @@ from tkinter import *
 import tkinter as tk
 from tkinter import ttk             #Módulos importados y variables de otro archivo
 from tiempo import data, my_list
+import pyttsx3
 
 app = Tk()
+app.geometry('1100x450')
+app.config(background='green')
 
 frm = ttk.Frame(app, padding=10)
 frm.grid()
+
 c = 0                                       #variables arbitrarias
 x = 1
+s = pyttsx3.init()
+message = 'el tiempo es el siguiente, introduce el parámetro que quieras ver individualmente'
+s.say(message)                                                                                                    #Da una introducción a la app
+s.runAndWait()
 
 def desplegar():
     global c
@@ -23,11 +31,11 @@ def desplegar():
 c = 0
 entry = ttk.Entry(frm, foreground='blue')
 entry.grid(column=0, row=0)
-label = ttk.Label(frm, text='hola')
+label = ttk.Label(frm, text='')
 label.grid(column=1, row=0)
 
 def remove_text():
-    label.config(text='')
+    label.config(text='')                                              #Borra la información
 
 
 def mostrar():
@@ -35,23 +43,27 @@ def mostrar():
     one = entry.get()
     global c
     i = 0
-    l = my_list
+    l = data()
 
     for j in l:
-        print(j)
+        print(j)                                                                #Muestra la información
         if one in j:
             break
         else:
             i += 1
         print(i)
         
-    print(my_list[i][2])
-    label.config(text=my_list[i][2])
+    q = my_list[i][2]
+    print(q)
+    message = q
+    s.say(q)
+    s.runAndWait()
+    label.config(text=q)
     label.grid(column=1, row=1)
 
-ttk.Button(frm, text='Enter', command=mostrar).grid(column=0, row=1)
-ttk.Button(frm, text="Delete", command=remove_text).grid(column=0, row=2)
-ttk.Button(frm, text='Desplegar', command=desplegar).grid(column=0, row=3)
+ttk.Button(frm, text='Enter', command=mostrar).grid(column=0, row=1)                #Botón para buscar la información necesaria en inglés
+ttk.Button(frm, text="Delete", command=remove_text).grid(column=0, row=2)           #Botón para borrar la información escrita
+ttk.Button(frm, text='Desplegar', command=desplegar).grid(column=0, row=3)          #Botón para desplegar toda la información
 ttk.Button(frm, text="Quit", command=app.destroy).grid(column=0, row=4)             #Botón para cerrar la aplicación
 
 app.mainloop()
